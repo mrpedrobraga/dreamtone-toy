@@ -6,9 +6,11 @@ class_name Enemy
 
 @export var display_name = "Brian"
 ## If this number reaches 0, they're out of commission!
-@export var hp = 20
+@export var hp = 30:
+	set(v):
+		hp = min(v, max_hp)
 ## How much HP it can hold.
-@export var max_hp = 20
+@export var max_hp = 40
 
 signal hp_changed(amount: float)
 

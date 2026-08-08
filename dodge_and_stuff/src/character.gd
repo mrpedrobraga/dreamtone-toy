@@ -47,6 +47,11 @@ enum ControlScheme {
 @export var dodge_duration = 0.5
 ## How long countering takes.
 @export var counter_duration = 0.25
+## For how many frames will the game hold onto unused input.
+##
+## This adds leniency for if the player tries to dodge another attack
+## before they've settled in an idle position.
+@export_range(0, 10) var input_buffer_size = 10
 var state_timer = 0.0
 
 func _physics_process(delta: float) -> void:
@@ -88,7 +93,14 @@ func _process_held_dodge(delta: float) -> void:
 			if state_timer <= 0:
 				_set_state(State.Idle, 0)
 
+func _input(event: InputEvent) -> void:
+	if input_buffer_size > 0:
+		GoInputBuffer.buffer_event(event, input_buffer_size)
+
 func _handle_inputs_timed_dodge():
+	if input_buffer_size > 0:
+		_handle_inputs_timed_dodge_buffered()
+		return
 	if Input.is_action_just_pressed("ok"):
 		counter()
 	if state == State.Idle:
@@ -97,6 +109,17 @@ func _handle_inputs_timed_dodge():
 		if Input.is_action_just_pressed("move_left"):
 			_set_state(State.DodgeLeft, dodge_duration)
 		if Input.is_action_just_pressed("move_down"):
+			_set_state(State.DodgeDown, dodge_duration)
+
+func _handle_inputs_timed_dodge_buffered():
+	if GoInputBuffer.is_action_buffered("ok", true):
+		counter()
+	if state == State.Idle:
+		if GoInputBuffer.is_action_buffered("move_right", true):
+			_set_state(State.DodgeRight, dodge_duration)
+		if GoInputBuffer.is_action_buffered("move_left", true):
+			_set_state(State.DodgeLeft, dodge_duration)
+		if GoInputBuffer.is_action_buffered("move_down", true):
 			_set_state(State.DodgeDown, dodge_duration)
 
 func _handle_inputs_held_dodge():

@@ -21,6 +21,10 @@ config/icon="uid://dafaqkxjctff7"
 
 buses/default_bus_layout="uid://caonl8mih8spc"
 
+[autoload]
+
+GoInputBufferInstance="*uid://d1terva60txbq"
+
 [display]
 
 window/size/viewport_width=320
@@ -29,6 +33,10 @@ window/size/window_width_override=1280
 window/size/window_height_override=720
 window/stretch/mode="viewport"
 window/stretch/scale_mode="integer"
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/goinputbuffer/plugin.cfg")
 
 [input]
 
