@@ -1,0 +1,36 @@
+@tool
+extends Control
+class_name DodgeBattle
+
+## An example of a turn-based system built around dodging!
+
+@export var main_char: CharacterInstance
+
+var current_char: CharacterInstance = null
+
+func _ready() -> void:
+	if Engine.is_editor_hint():
+		return
+	
+	current_char = main_char
+
+func _process(_delta: float) -> void:
+	if Engine.is_editor_hint():
+		return
+	
+	if Input.is_action_just_pressed("ok"):
+		current_char.counter()
+	if Input.is_action_just_pressed("move_right"):
+		current_char.dodge_right()
+	if Input.is_action_just_pressed("move_left"):
+		current_char.dodge_left()
+	if Input.is_action_just_pressed("move_down"):
+		current_char.dodge_down()
+	if Input.is_action_just_pressed("fullscreen"):
+		if DisplayServer.window_get_mode() == DisplayServer.WINDOW_MODE_FULLSCREEN:
+			DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
+		else:
+			DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
+
+func harm_character():
+	current_char.harm()

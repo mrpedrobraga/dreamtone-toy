@@ -1,0 +1,231 @@
+[gd_scene format=3 uid="uid://djqwij73x3og8"]
+
+[ext_resource type="Script" uid="uid://chuwb8nqerrhk" path="res://dodge_and_stuff/src/dodge_battle.gd" id="1_76uao"]
+[ext_resource type="Theme" uid="uid://do7bc57iknn4r" path="res://dodge_and_stuff/theme.tres" id="1_c0f6q"]
+[ext_resource type="Texture2D" uid="uid://p2iisdwhoovg" path="res://dodge_and_stuff/sprites/enemy-guy-idle.png" id="1_q18ew"]
+[ext_resource type="Script" uid="uid://cfccggut3r4yq" path="res://dodge_and_stuff/src/character.gd" id="3_c0sd3"]
+[ext_resource type="Texture2D" uid="uid://by6blq86xh8s8" path="res://dodge_and_stuff/sprites/enemy-guy-hurt.png" id="3_t0f7q"]
+[ext_resource type="Texture2D" uid="uid://y8m3huogdvri" path="res://dodge_and_stuff/sprites/black-bars.png" id="3_t3wmi"]
+[ext_resource type="Script" uid="uid://cwpas5h0gtoka" path="res://dodge_and_stuff/sine_hazard.gd" id="4_sofii"]
+[ext_resource type="Texture2D" uid="uid://ccj2spmy16y2r" path="res://dodge_and_stuff/sprites/you.png" id="5_67mgr"]
+[ext_resource type="Texture2D" uid="uid://13fq84e4pfmw" path="res://dodge_and_stuff/sprites/stat-view.png" id="6_xo11e"]
+[ext_resource type="Script" uid="uid://my2a3q2801ea" path="res://dodge_and_stuff/src/character_visuals.gd" id="7_cdijj"]
+[ext_resource type="AudioStream" uid="uid://bho7e46rs7lb0" path="res://dodge_and_stuff/sound/dodge.wav" id="8_jvh00"]
+[ext_resource type="Script" uid="uid://c6vbwmmkqn5pw" path="res://dodge_and_stuff/src/stat_view.gd" id="8_uw6ox"]
+[ext_resource type="AudioStream" uid="uid://d0s1myehbrthj" path="res://dodge_and_stuff/sound/jump.wav" id="9_5sjo7"]
+[ext_resource type="AudioStream" uid="uid://dmpvkgceu2lr8" path="res://dodge_and_stuff/sound/hurt.wav" id="11_11tia"]
+[ext_resource type="Script" uid="uid://dyxi1lgbyk0mt" path="res://dodge_and_stuff/src/hazards_view.gd" id="11_sofii"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_q18ew"]
+atlas = ExtResource("1_q18ew")
+region = Rect2(0, 0, 96, 112)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_76uao"]
+atlas = ExtResource("1_q18ew")
+region = Rect2(96, 0, 96, 112)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_vni0v"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_t0f7q")
+}],
+"loop": 1,
+"name": &"hurt",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_q18ew")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_76uao")
+}],
+"loop": 1,
+"name": &"idle",
+"speed": 5.0
+}]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uw6ox"]
+atlas = ExtResource("5_67mgr")
+region = Rect2(288, 0, 72, 88)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_c0sd3"]
+atlas = ExtResource("5_67mgr")
+region = Rect2(72, 0, 72, 88)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cdijj"]
+atlas = ExtResource("5_67mgr")
+region = Rect2(216, 0, 72, 88)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jvh00"]
+atlas = ExtResource("5_67mgr")
+region = Rect2(144, 0, 72, 88)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5sjo7"]
+atlas = ExtResource("5_67mgr")
+region = Rect2(0, 0, 72, 88)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_07b3m"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_uw6ox")
+}],
+"loop": 1,
+"name": &"counter",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_c0sd3")
+}],
+"loop": 1,
+"name": &"dodge_down",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cdijj")
+}],
+"loop": 1,
+"name": &"dodge_left",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jvh00")
+}],
+"loop": 1,
+"name": &"dodge_right",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5sjo7")
+}],
+"loop": 1,
+"name": &"idle",
+"speed": 5.0
+}]
+
+[node name="Dodge" type="Control" unique_id=1675359386 node_paths=PackedStringArray("main_char")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_c0f6q")
+script = ExtResource("1_76uao")
+main_char = NodePath("Battle/Party/Mike")
+
+[node name="Battle" type="Node" parent="." unique_id=1820530776]
+
+[node name="Party" type="Node" parent="Battle" unique_id=877858489]
+
+[node name="Mike" type="Node" parent="Battle/Party" unique_id=1530470528]
+script = ExtResource("3_c0sd3")
+metadata/_custom_type_script = "uid://cfccggut3r4yq"
+
+[node name="Hazards" type="Node" parent="Battle" unique_id=1488476262]
+
+[node name="Hazard" type="Node" parent="Battle/Hazards" unique_id=881248291 node_paths=PackedStringArray("battle")]
+script = ExtResource("4_sofii")
+battle = NodePath("../../..")
+metadata/_custom_type_script = "uid://4joky7asgeoj"
+
+[node name="Narration" type="RichTextLabel" parent="." unique_id=407373831]
+custom_minimum_size = Vector2(0, 32)
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 32.0
+grow_horizontal = 2
+bbcode_enabled = true
+text = "Battle Start!"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Enemies" type="Node2D" parent="." unique_id=642852438]
+position = Vector2(160, 74)
+
+[node name="Enemy Guy A" type="Node2D" parent="Enemies" unique_id=1232444053]
+
+[node name="Visuals" type="AnimatedSprite2D" parent="Enemies/Enemy Guy A" unique_id=887841954]
+sprite_frames = SubResource("SpriteFrames_vni0v")
+animation = &"idle"
+autoplay = "idle"
+
+[node name="You" type="Node2D" parent="." unique_id=1586470766]
+position = Vector2(160, 129)
+
+[node name="CharacterView" type="AnimatedSprite2D" parent="You" unique_id=2106639230 node_paths=PackedStringArray("character")]
+sprite_frames = SubResource("SpriteFrames_07b3m")
+animation = &"dodge_left"
+autoplay = "idle"
+offset = Vector2(0, -16)
+script = ExtResource("7_cdijj")
+character = NodePath("../../Battle/Party/Mike")
+
+[node name="DodgeRight" type="AudioStreamPlayer2D" parent="You/CharacterView" unique_id=1198352489]
+position = Vector2(32, 0)
+stream = ExtResource("8_jvh00")
+volume_db = -10.0
+bus = &"SFX"
+
+[node name="DodgeLeft" type="AudioStreamPlayer2D" parent="You/CharacterView" unique_id=238152678]
+position = Vector2(-32, 0)
+stream = ExtResource("8_jvh00")
+volume_db = -10.0
+bus = &"SFX"
+
+[node name="DodgeDown" type="AudioStreamPlayer2D" parent="You/CharacterView" unique_id=1336267587]
+position = Vector2(0, 24)
+stream = ExtResource("8_jvh00")
+volume_db = -10.0
+bus = &"SFX"
+
+[node name="Jump" type="AudioStreamPlayer2D" parent="You/CharacterView" unique_id=1932420111]
+stream = ExtResource("9_5sjo7")
+bus = &"SFX"
+
+[node name="Hurt" type="AudioStreamPlayer2D" parent="You/CharacterView" unique_id=1234557262]
+stream = ExtResource("11_11tia")
+bus = &"SFX"
+
+[node name="AudioListener2D" type="AudioListener2D" parent="You/CharacterView" unique_id=1308185163]
+
+[node name="HazardsView" type="Node2D" parent="." unique_id=1055228488 node_paths=PackedStringArray("hazards", "target_character_instance", "target_character_node")]
+script = ExtResource("11_sofii")
+hazards = NodePath("../Battle/Hazards")
+target_character_instance = NodePath("../Battle/Party/Mike")
+target_character_node = NodePath("../You")
+
+[node name="UI" type="TextureRect" parent="." unique_id=1025580844]
+z_index = 1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_t3wmi")
+
+[node name="StatView" type="TextureRect" parent="UI" unique_id=1659256048]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -32.0
+offset_top = -40.0
+offset_right = 32.0
+grow_horizontal = 2
+grow_vertical = 0
+texture = ExtResource("6_xo11e")
+script = ExtResource("8_uw6ox")
+
+[connection signal="hp_changed" from="Battle/Party/Mike" to="You/CharacterView" method="_on_mike_hp_changed"]
+[connection signal="state_changed" from="Battle/Party/Mike" to="You/CharacterView" method="_on_mike_state_changed"]
