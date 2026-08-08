@@ -15,6 +15,7 @@ class_name CharacterInstance
 @export var max_en = 10
 
 signal hp_changed(amount: float)
+signal attack_enemy()
 
 ## __ Internal __
 
@@ -28,6 +29,8 @@ enum State {
 	Counter
 }
 
+signal state_changed(new_state: State)
+
 @export var scheme: ControlScheme = ControlScheme.TimedDodge
 
 enum ControlScheme {
@@ -36,8 +39,6 @@ enum ControlScheme {
 	## Holding the button keeps you at a position!
 	HeldDodge,
 }
-
-signal state_changed(new_state: State)
 
 @export_category("Fine Tuning")
 ## How long dodging takes.
@@ -118,6 +119,9 @@ func _handle_inputs_held_dodge():
 func counter() -> void:
 	if state == State.Idle:
 		_set_state(State.Counter, counter_duration)
+		get_tree().create_timer(0.1).timeout.connect(func ():
+			attack_enemy.emit()
+		)
 
 func harm() -> void:
 	hp -= 1

@@ -8,13 +8,20 @@
 [ext_resource type="Texture2D" uid="uid://y8m3huogdvri" path="res://dodge_and_stuff/sprites/black-bars.png" id="3_t3wmi"]
 [ext_resource type="Script" uid="uid://d0gnekkcnb0j5" path="res://dodge_and_stuff/src/attacks/sample_attack.gd" id="4_jkatc"]
 [ext_resource type="Texture2D" uid="uid://ccj2spmy16y2r" path="res://dodge_and_stuff/sprites/you.png" id="5_67mgr"]
+[ext_resource type="Script" uid="uid://qd8hqap80omx" path="res://dodge_and_stuff/src/enemy.gd" id="5_jkatc"]
+[ext_resource type="Shader" uid="uid://cpu6u6qcs7rob" path="res://dodge_and_stuff/bbg.gdshader" id="6_4atn1"]
 [ext_resource type="Texture2D" uid="uid://13fq84e4pfmw" path="res://dodge_and_stuff/sprites/stat-view.png" id="6_xo11e"]
 [ext_resource type="Script" uid="uid://my2a3q2801ea" path="res://dodge_and_stuff/src/character_visuals.gd" id="7_cdijj"]
+[ext_resource type="Texture2D" uid="uid://dafaqkxjctff7" path="res://dodge_and_stuff/sprites/you-icon.png" id="7_ivulj"]
+[ext_resource type="Script" uid="uid://ddu0ct2uhd8bi" path="res://dodge_and_stuff/src/enemy_visuals.gd" id="8_hgbt4"]
 [ext_resource type="AudioStream" uid="uid://bho7e46rs7lb0" path="res://dodge_and_stuff/sound/dodge.wav" id="8_jvh00"]
 [ext_resource type="Script" uid="uid://c6vbwmmkqn5pw" path="res://dodge_and_stuff/src/stat_view.gd" id="8_uw6ox"]
 [ext_resource type="AudioStream" uid="uid://d0s1myehbrthj" path="res://dodge_and_stuff/sound/jump.wav" id="9_5sjo7"]
 [ext_resource type="AudioStream" uid="uid://dmpvkgceu2lr8" path="res://dodge_and_stuff/sound/hurt.wav" id="11_11tia"]
 [ext_resource type="Script" uid="uid://dyxi1lgbyk0mt" path="res://dodge_and_stuff/src/attacks/hazards_view.gd" id="11_sofii"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_vni0v"]
+shader = ExtResource("6_4atn1")
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_q18ew"]
 atlas = ExtResource("1_q18ew")
@@ -126,13 +133,30 @@ main_char = NodePath("Battle/Party/Mike")
 
 [node name="Mike" type="Node" parent="Battle/Party" unique_id=1530470528]
 script = ExtResource("3_c0sd3")
-scheme = 1
 metadata/_custom_type_script = "uid://cfccggut3r4yq"
 
 [node name="Attack" type="Node" parent="Battle" unique_id=337777821 node_paths=PackedStringArray("battle")]
 script = ExtResource("4_jkatc")
 battle = NodePath("../..")
 metadata/_custom_type_script = "uid://dkk75umd34gqe"
+
+[node name="Enemies" type="Node" parent="Battle" unique_id=1514434175]
+
+[node name="Brian" type="Node" parent="Battle/Enemies" unique_id=501997132]
+script = ExtResource("5_jkatc")
+metadata/_custom_type_script = "uid://qd8hqap80omx"
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=1060085177]
+self_modulate = Color(1, 1, 1, 0.1254902)
+material = SubResource("ShaderMaterial_vni0v")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("7_ivulj")
+stretch_mode = 1
 
 [node name="Narration" type="RichTextLabel" parent="." unique_id=407373831]
 custom_minimum_size = Vector2(0, 32)
@@ -151,10 +175,16 @@ position = Vector2(160, 74)
 
 [node name="Enemy Guy A" type="Node2D" parent="Enemies" unique_id=1232444053]
 
-[node name="Visuals" type="AnimatedSprite2D" parent="Enemies/Enemy Guy A" unique_id=887841954]
+[node name="Visuals" type="AnimatedSprite2D" parent="Enemies/Enemy Guy A" unique_id=887841954 node_paths=PackedStringArray("enemy")]
 sprite_frames = SubResource("SpriteFrames_vni0v")
 animation = &"idle"
 autoplay = "idle"
+script = ExtResource("8_hgbt4")
+enemy = NodePath("../../../Battle/Enemies/Brian")
+
+[node name="Hurt" type="AudioStreamPlayer2D" parent="Enemies/Enemy Guy A/Visuals" unique_id=1341639296]
+stream = ExtResource("11_11tia")
+bus = &"SFX"
 
 [node name="You" type="Node2D" parent="." unique_id=1586470766]
 position = Vector2(160, 129)
@@ -226,5 +256,7 @@ grow_vertical = 0
 texture = ExtResource("6_xo11e")
 script = ExtResource("8_uw6ox")
 
+[connection signal="attack_enemy" from="Battle/Party/Mike" to="." method="_on_mike_attack_enemy"]
 [connection signal="hp_changed" from="Battle/Party/Mike" to="You/CharacterView" method="_on_mike_hp_changed"]
 [connection signal="state_changed" from="Battle/Party/Mike" to="You/CharacterView" method="_on_mike_state_changed"]
+[connection signal="state_changed" from="Battle/Enemies/Brian" to="Enemies/Enemy Guy A/Visuals" method="_on_brian_state_changed"]

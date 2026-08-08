@@ -5,7 +5,6 @@ class_name DodgeBattle
 ## An example of a turn-based system built around dodging!
 
 @export var main_char: CharacterInstance
-
 var current_char: CharacterInstance = null
 
 func _ready() -> void:
@@ -26,3 +25,11 @@ func _process(_delta: float) -> void:
 
 func harm_character():
 	current_char.harm()
+	update_score()
+
+func _on_mike_attack_enemy() -> void:
+	$Battle/Enemies/Brian.harm()
+	update_score()
+
+func update_score():
+	$Narration.text = "Enemy HP: %s; Your Hp: %s" % [ $Battle/Enemies/Brian.hp, current_char.hp ]
