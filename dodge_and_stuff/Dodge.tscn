@@ -6,7 +6,7 @@
 [ext_resource type="Script" uid="uid://cfccggut3r4yq" path="res://dodge_and_stuff/src/character.gd" id="3_c0sd3"]
 [ext_resource type="Texture2D" uid="uid://by6blq86xh8s8" path="res://dodge_and_stuff/sprites/enemy-guy-hurt.png" id="3_t0f7q"]
 [ext_resource type="Texture2D" uid="uid://y8m3huogdvri" path="res://dodge_and_stuff/sprites/black-bars.png" id="3_t3wmi"]
-[ext_resource type="Script" uid="uid://cwpas5h0gtoka" path="res://dodge_and_stuff/sine_hazard.gd" id="4_sofii"]
+[ext_resource type="Script" uid="uid://d0gnekkcnb0j5" path="res://dodge_and_stuff/src/attacks/sample_attack.gd" id="4_jkatc"]
 [ext_resource type="Texture2D" uid="uid://ccj2spmy16y2r" path="res://dodge_and_stuff/sprites/you.png" id="5_67mgr"]
 [ext_resource type="Texture2D" uid="uid://13fq84e4pfmw" path="res://dodge_and_stuff/sprites/stat-view.png" id="6_xo11e"]
 [ext_resource type="Script" uid="uid://my2a3q2801ea" path="res://dodge_and_stuff/src/character_visuals.gd" id="7_cdijj"]
@@ -14,7 +14,7 @@
 [ext_resource type="Script" uid="uid://c6vbwmmkqn5pw" path="res://dodge_and_stuff/src/stat_view.gd" id="8_uw6ox"]
 [ext_resource type="AudioStream" uid="uid://d0s1myehbrthj" path="res://dodge_and_stuff/sound/jump.wav" id="9_5sjo7"]
 [ext_resource type="AudioStream" uid="uid://dmpvkgceu2lr8" path="res://dodge_and_stuff/sound/hurt.wav" id="11_11tia"]
-[ext_resource type="Script" uid="uid://dyxi1lgbyk0mt" path="res://dodge_and_stuff/src/hazards_view.gd" id="11_sofii"]
+[ext_resource type="Script" uid="uid://dyxi1lgbyk0mt" path="res://dodge_and_stuff/src/attacks/hazards_view.gd" id="11_sofii"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_q18ew"]
 atlas = ExtResource("1_q18ew")
@@ -128,12 +128,10 @@ main_char = NodePath("Battle/Party/Mike")
 script = ExtResource("3_c0sd3")
 metadata/_custom_type_script = "uid://cfccggut3r4yq"
 
-[node name="Hazards" type="Node" parent="Battle" unique_id=1488476262]
-
-[node name="Hazard" type="Node" parent="Battle/Hazards" unique_id=881248291 node_paths=PackedStringArray("battle")]
-script = ExtResource("4_sofii")
-battle = NodePath("../../..")
-metadata/_custom_type_script = "uid://4joky7asgeoj"
+[node name="Attack" type="Node" parent="Battle" unique_id=337777821 node_paths=PackedStringArray("battle")]
+script = ExtResource("4_jkatc")
+battle = NodePath("../..")
+metadata/_custom_type_script = "uid://dkk75umd34gqe"
 
 [node name="Narration" type="RichTextLabel" parent="." unique_id=407373831]
 custom_minimum_size = Vector2(0, 32)
@@ -196,9 +194,9 @@ bus = &"SFX"
 
 [node name="AudioListener2D" type="AudioListener2D" parent="You/CharacterView" unique_id=1308185163]
 
-[node name="HazardsView" type="Node2D" parent="." unique_id=1055228488 node_paths=PackedStringArray("hazards", "target_character_instance", "target_character_node")]
+[node name="AttackView" type="Node2D" parent="." unique_id=1055228488 node_paths=PackedStringArray("attack", "target_character_instance", "target_character_node")]
 script = ExtResource("11_sofii")
-hazards = NodePath("../Battle/Hazards")
+attack = NodePath("../Battle/Attack")
 target_character_instance = NodePath("../Battle/Party/Mike")
 target_character_node = NodePath("../You")
 

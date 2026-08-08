@@ -1,12 +1,12 @@
 @tool
 extends Node2D
-class_name HazardsView
+class_name AttackView
 
-@export var hazards: Node
+@export var attack: Node
 @export var target_character_instance: CharacterInstance
 @export var target_character_node: Node2D
 
-func _physics_process(delta: float) -> void:
+func _physics_process(_delta: float) -> void:
 	queue_redraw()
 
 func _draw() -> void:
@@ -16,7 +16,7 @@ const dodge_horizontal_offset_px = 32;
 const dodge_vertical_offset_px = 24;
 
 func _draw_hazards():
-	for child in hazards.get_children():
+	for child in attack.get_children():
 		var hazard: Hazard = child
 		var texture = hazard.texture
 		var origin = target_character_node.global_position

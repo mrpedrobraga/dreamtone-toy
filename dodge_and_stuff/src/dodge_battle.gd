@@ -13,6 +13,7 @@ func _ready() -> void:
 		return
 	
 	current_char = main_char
+	$Battle/Attack._run()
 
 func _process(_delta: float) -> void:
 	if Engine.is_editor_hint():
