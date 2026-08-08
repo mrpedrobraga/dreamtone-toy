@@ -9,6 +9,13 @@ func _process(_delta: float) -> void:
 	pass
 
 func _on_mike_state_changed(new_state: CharacterInstance.State) -> void:
+	match character.scheme:
+		CharacterInstance.ControlScheme.TimedDodge:
+			_handle_state_change_timed_dodge(new_state)
+		CharacterInstance.ControlScheme.HeldDodge:
+			_handle_state_change_held_dodge(new_state)
+
+func _handle_state_change_timed_dodge(new_state: CharacterInstance.State) -> void:
 	match new_state:
 		CharacterInstance.State.Idle:
 			play("idle")
@@ -29,6 +36,29 @@ func _on_mike_state_changed(new_state: CharacterInstance.State) -> void:
 			_tween_counter()
 			$Jump.play()
 
+func _handle_state_change_held_dodge(new_state: CharacterInstance.State) -> void:
+	match new_state:
+		CharacterInstance.State.Idle:
+			play("idle")
+			_tween_reset_move()
+			$DodgeDown.play()
+		CharacterInstance.State.DodgeRight:
+			play("dodge_right")
+			_tween_move(dodge_horizontal_offset_px * Vector2.RIGHT)
+			$DodgeRight.play()
+		CharacterInstance.State.DodgeLeft:
+			play("dodge_left")
+			_tween_move(dodge_horizontal_offset_px * Vector2.LEFT)
+			$DodgeLeft.play()
+		CharacterInstance.State.DodgeDown:
+			play("dodge_down")
+			_tween_move(dodge_vertical_offset_px * Vector2.DOWN)
+			$DodgeDown.play()
+		CharacterInstance.State.Counter:
+			play("counter")
+			_tween_counter()
+			$Jump.play()
+
 const dodge_horizontal_offset_px = 32;
 const dodge_vertical_offset_px = 24;
 
@@ -37,10 +67,18 @@ func _tween_dodge(amount: float, axis: String):
 	t.tween_property(self, "position:" + axis, amount, character.dodge_duration / 2).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_QUAD)
 	t.tween_property(self, "position:" + axis, 0, character.dodge_duration / 2).set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_QUAD)
 
+func _tween_move(where: Vector2):
+	var t = create_tween()
+	t.tween_property(self, "position", where, character.dodge_duration / 2).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_QUAD)
+
+func _tween_reset_move():
+	var t = create_tween()
+	t.tween_property(self, "position", Vector2.ZERO, character.dodge_duration / 2).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_QUAD)
+
 func _tween_counter():
 	var t = create_tween()
-	t.tween_property(self, "position:y", -dodge_vertical_offset_px, 0.1).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_QUAD)
-	t.tween_property(self, "position:y", 0, character.counter_duration).set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_QUAD)
+	t.tween_property(self, "position", dodge_vertical_offset_px * Vector2.UP, 0.2).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_QUAD)
+	t.tween_property(self, "position", Vector2.ZERO, character.counter_duration / 2).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_QUAD)
 
 func _on_mike_hp_changed(_amount: float) -> void:
 	$Hurt.play()

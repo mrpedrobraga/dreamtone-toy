@@ -10,10 +10,12 @@ config_version=5
 
 [application]
 
-config/name="Dreamtone Prototypes 2"
+config/name="Dreamtone Toy"
+config/description="A Toy Version of DREAMTONE for quick prototyping
+!"
 run/main_scene="uid://djqwij73x3og8"
 config/features=PackedStringArray("4.7", "Forward Plus")
-config/icon="res://icon.svg"
+config/icon="uid://dafaqkxjctff7"
 
 [audio]
 

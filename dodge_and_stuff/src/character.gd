@@ -32,19 +32,30 @@ enum State {
 
 enum ControlScheme {
 	## Classic DREAMTONE control scheme!
-	TimedDodge, 
+	TimedDodge,
+	## Holding the button keeps you at a position!
+	HeldDodge,
 }
 
 signal state_changed(new_state: State)
 
-const dodge_duration = 0.5
-const counter_duration = 0.25
+@export_category("Fine Tuning")
+## How long dodging takes.
+## Faster dodges means more precise control.
+## Only meaningul in the 'Timed Dodge' scheme.
+@export var dodge_duration = 0.5
+## How long countering takes.
+@export var counter_duration = 0.25
 var state_timer = 0.0
 
 func _physics_process(delta: float) -> void:
 	match scheme:
 		ControlScheme.TimedDodge:
+			_handle_inputs_timed_dodge()
 			_process_timed_dodge(delta)
+		ControlScheme.HeldDodge:
+			_handle_inputs_held_dodge()
+			_process_held_dodge(delta)
 
 func _process_timed_dodge(delta: float) -> void:
 	match state:
@@ -67,24 +78,46 @@ func _process_timed_dodge(delta: float) -> void:
 			if state_timer <= 0:
 				_set_state(State.Idle, 0)
 
-func _process_held_dodge(_delta: float) -> void:
-	pass
+func _process_held_dodge(delta: float) -> void:
+	match state:
+		State.Idle:
+			pass
+		State.Counter:
+			state_timer -= delta
+			if state_timer <= 0:
+				_set_state(State.Idle, 0)
+
+func _handle_inputs_timed_dodge():
+	if Input.is_action_just_pressed("ok"):
+		counter()
+	if state == State.Idle:
+		if Input.is_action_just_pressed("move_right"):
+			_set_state(State.DodgeRight, dodge_duration)
+		if Input.is_action_just_pressed("move_left"):
+			_set_state(State.DodgeLeft, dodge_duration)
+		if Input.is_action_just_pressed("move_down"):
+			_set_state(State.DodgeDown, dodge_duration)
+
+func _handle_inputs_held_dodge():
+	if state == State.Idle and Input.is_action_just_pressed("ok"):
+		counter()
+		return
+	if state == State.Counter:
+		return
+	var new_state = State.Idle
+	if Input.is_action_pressed("move_right"):
+		new_state = State.DodgeRight
+	elif Input.is_action_pressed("move_left"):
+		new_state = State.DodgeLeft
+	elif Input.is_action_pressed("move_down"):
+		new_state = State.DodgeDown
+	
+	if new_state != state:
+		_set_state(new_state, dodge_duration)
 
 func counter() -> void:
 	if state == State.Idle:
 		_set_state(State.Counter, counter_duration)
-
-func dodge_right() -> void:
-	if state == State.Idle:
-		_set_state(State.DodgeRight, dodge_duration)
-
-func dodge_left() -> void:
-	if state == State.Idle:
-		_set_state(State.DodgeLeft, dodge_duration)
-
-func dodge_down() -> void:
-	if state == State.Idle:
-		_set_state(State.DodgeDown, dodge_duration)
 
 func harm() -> void:
 	hp -= 1
