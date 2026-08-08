@@ -4,15 +4,11 @@ class_name Enemy
 
 ## Represents an enemy in the battle.
 
-@export var display_name = "Mike"
-## If this number reaches 0, you're out of commission!
-@export var hp = 10
-## How much HP you can hold.
-@export var max_hp = 10
-## Adrenaline-type energy that powers special skills.
-@export var en = 10
-## How much EN you can hold.
-@export var max_en = 10
+@export var display_name = "Brian"
+## If this number reaches 0, they're out of commission!
+@export var hp = 20
+## How much HP it can hold.
+@export var max_hp = 20
 
 signal hp_changed(amount: float)
 
@@ -22,7 +18,8 @@ var state: State
 
 enum State {
 	Idle,
-	Hurt
+	Hurt,
+	Dead,
 }
 
 signal state_changed(new_state: State)
@@ -44,6 +41,9 @@ func harm() -> void:
 	hp -= 1
 	hp_changed.emit(1)
 	_set_state(State.Hurt, hurt_duration)
+
+func die():
+	state_changed.emit(State.Dead)
 
 func _set_state(new_state: State, timer: float):
 	state_timer = timer

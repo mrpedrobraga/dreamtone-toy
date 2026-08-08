@@ -2,6 +2,7 @@
 extends Attack
 
 func _run():
+	await pause(2.0)
 	while true:
 		var speed = 5
 		spawn_bullet(Vector2(0, -4), Vector2(0, speed))

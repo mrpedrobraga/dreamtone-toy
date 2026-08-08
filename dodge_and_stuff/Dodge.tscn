@@ -4,8 +4,10 @@
 [ext_resource type="Theme" uid="uid://do7bc57iknn4r" path="res://dodge_and_stuff/theme.tres" id="1_c0f6q"]
 [ext_resource type="Texture2D" uid="uid://p2iisdwhoovg" path="res://dodge_and_stuff/sprites/enemy-guy-idle.png" id="1_q18ew"]
 [ext_resource type="Script" uid="uid://cfccggut3r4yq" path="res://dodge_and_stuff/src/character.gd" id="3_c0sd3"]
+[ext_resource type="AudioStream" uid="uid://dnctor247xn6t" path="res://dodge_and_stuff/sound/battle-music.ogg" id="3_ivulj"]
 [ext_resource type="Texture2D" uid="uid://by6blq86xh8s8" path="res://dodge_and_stuff/sprites/enemy-guy-hurt.png" id="3_t0f7q"]
 [ext_resource type="Texture2D" uid="uid://y8m3huogdvri" path="res://dodge_and_stuff/sprites/black-bars.png" id="3_t3wmi"]
+[ext_resource type="AudioStream" uid="uid://chit20bwrn0li" path="res://dodge_and_stuff/sound/won.ogg" id="4_74c63"]
 [ext_resource type="Script" uid="uid://d0gnekkcnb0j5" path="res://dodge_and_stuff/src/attacks/sample_attack.gd" id="4_jkatc"]
 [ext_resource type="Texture2D" uid="uid://ccj2spmy16y2r" path="res://dodge_and_stuff/sprites/you.png" id="5_67mgr"]
 [ext_resource type="Script" uid="uid://qd8hqap80omx" path="res://dodge_and_stuff/src/enemy.gd" id="5_jkatc"]
@@ -19,6 +21,7 @@
 [ext_resource type="AudioStream" uid="uid://d0s1myehbrthj" path="res://dodge_and_stuff/sound/jump.wav" id="9_5sjo7"]
 [ext_resource type="AudioStream" uid="uid://dmpvkgceu2lr8" path="res://dodge_and_stuff/sound/hurt.wav" id="11_11tia"]
 [ext_resource type="Script" uid="uid://dyxi1lgbyk0mt" path="res://dodge_and_stuff/src/attacks/hazards_view.gd" id="11_sofii"]
+[ext_resource type="AudioStream" uid="uid://bhvgu4g7ve5g" path="res://dodge_and_stuff/sound/batman-pow.mp3" id="12_vfeb1"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_vni0v"]
 shader = ExtResource("6_4atn1")
@@ -129,6 +132,13 @@ main_char = NodePath("Battle/Party/Mike")
 
 [node name="Battle" type="Node" parent="." unique_id=1820530776]
 
+[node name="Music" type="AudioStreamPlayer" parent="Battle" unique_id=1440784279]
+stream = ExtResource("3_ivulj")
+autoplay = true
+
+[node name="You Won" type="AudioStreamPlayer" parent="Battle" unique_id=702959190]
+stream = ExtResource("4_74c63")
+
 [node name="Party" type="Node" parent="Battle" unique_id=877858489]
 
 [node name="Mike" type="Node" parent="Battle/Party" unique_id=1530470528]
@@ -183,7 +193,7 @@ script = ExtResource("8_hgbt4")
 enemy = NodePath("../../../Battle/Enemies/Brian")
 
 [node name="Hurt" type="AudioStreamPlayer2D" parent="Enemies/Enemy Guy A/Visuals" unique_id=1341639296]
-stream = ExtResource("11_11tia")
+stream = ExtResource("12_vfeb1")
 bus = &"SFX"
 
 [node name="You" type="Node2D" parent="." unique_id=1586470766]

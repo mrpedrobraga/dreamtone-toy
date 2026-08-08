@@ -16,6 +16,8 @@ const dodge_horizontal_offset_px = 32;
 const dodge_vertical_offset_px = 24;
 
 func _draw_hazards():
+	if not attack:
+		return
 	for child in attack.get_children():
 		var hazard: Hazard = child
 		var texture = hazard.texture

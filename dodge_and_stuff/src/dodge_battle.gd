@@ -7,6 +7,8 @@ class_name DodgeBattle
 @export var main_char: CharacterInstance
 var current_char: CharacterInstance = null
 
+var you_won = false
+
 func _ready() -> void:
 	if Engine.is_editor_hint():
 		return
@@ -25,11 +27,25 @@ func _process(_delta: float) -> void:
 
 func harm_character():
 	current_char.harm()
+	$Battle/Enemies/Brian.hp += 4
 	update_score()
 
 func _on_mike_attack_enemy() -> void:
+	if you_won:
+		return
+	
 	$Battle/Enemies/Brian.harm()
 	update_score()
+	
+	if $Battle/Enemies/Brian.hp <= 0:
+		you_won = true
+		$Battle/Music.stop()
+		$Battle/Enemies/Brian.die()
+		$Battle/Attack.queue_free()
+	
+		await get_tree().create_timer(2.0).timeout
+		$"Battle/You Won".play()
+		$Narration.text = "You Won! Brian is fucking dead!"
 
 func update_score():
-	$Narration.text = "Brian's HP: %s; Your Hp: %s" % [ $Battle/Enemies/Brian.hp, current_char.hp ]
+	$Narration.text = "Brian's HP: %s" % [ $Battle/Enemies/Brian.hp ]
