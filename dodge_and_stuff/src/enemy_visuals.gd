@@ -8,7 +8,7 @@ func _on_brian_state_changed(new_state: Enemy.State) -> void:
 			play("idle")
 		Enemy.State.Hurt:
 			play("hurt")
-			_tween_dodge(-8, "y")
+			_tween_dodge(-16, "y")
 			$Hurt.play()
 
 func _tween_dodge(amount: float, axis: String):

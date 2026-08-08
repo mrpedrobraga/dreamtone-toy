@@ -32,4 +32,4 @@ func _on_mike_attack_enemy() -> void:
 	update_score()
 
 func update_score():
-	$Narration.text = "Enemy HP: %s; Your Hp: %s" % [ $Battle/Enemies/Brian.hp, current_char.hp ]
+	$Narration.text = "Brian's HP: %s; Your Hp: %s" % [ $Battle/Enemies/Brian.hp, current_char.hp ]

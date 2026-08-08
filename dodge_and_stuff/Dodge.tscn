@@ -11,8 +11,8 @@
 [ext_resource type="Script" uid="uid://qd8hqap80omx" path="res://dodge_and_stuff/src/enemy.gd" id="5_jkatc"]
 [ext_resource type="Shader" uid="uid://cpu6u6qcs7rob" path="res://dodge_and_stuff/bbg.gdshader" id="6_4atn1"]
 [ext_resource type="Texture2D" uid="uid://13fq84e4pfmw" path="res://dodge_and_stuff/sprites/stat-view.png" id="6_xo11e"]
+[ext_resource type="Texture2D" uid="uid://cupw7k1mmwyhg" path="res://dodge_and_stuff/sprites/enemy-icon.png" id="7_4atn1"]
 [ext_resource type="Script" uid="uid://my2a3q2801ea" path="res://dodge_and_stuff/src/character_visuals.gd" id="7_cdijj"]
-[ext_resource type="Texture2D" uid="uid://dafaqkxjctff7" path="res://dodge_and_stuff/sprites/you-icon.png" id="7_ivulj"]
 [ext_resource type="Script" uid="uid://ddu0ct2uhd8bi" path="res://dodge_and_stuff/src/enemy_visuals.gd" id="8_hgbt4"]
 [ext_resource type="AudioStream" uid="uid://bho7e46rs7lb0" path="res://dodge_and_stuff/sound/dodge.wav" id="8_jvh00"]
 [ext_resource type="Script" uid="uid://c6vbwmmkqn5pw" path="res://dodge_and_stuff/src/stat_view.gd" id="8_uw6ox"]
@@ -155,7 +155,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("7_ivulj")
+texture = ExtResource("7_4atn1")
 stretch_mode = 1
 
 [node name="Narration" type="RichTextLabel" parent="." unique_id=407373831]
