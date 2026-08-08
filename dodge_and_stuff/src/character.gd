@@ -28,6 +28,13 @@ enum State {
 	Counter
 }
 
+@export var scheme: ControlScheme = ControlScheme.TimedDodge
+
+enum ControlScheme {
+	## Classic DREAMTONE control scheme!
+	TimedDodge, 
+}
+
 signal state_changed(new_state: State)
 
 const dodge_duration = 0.5
@@ -35,6 +42,11 @@ const counter_duration = 0.25
 var state_timer = 0.0
 
 func _physics_process(delta: float) -> void:
+	match scheme:
+		ControlScheme.TimedDodge:
+			_process_timed_dodge(delta)
+
+func _process_timed_dodge(delta: float) -> void:
 	match state:
 		State.Idle:
 			pass
@@ -54,6 +66,9 @@ func _physics_process(delta: float) -> void:
 			state_timer -= delta
 			if state_timer <= 0:
 				_set_state(State.Idle, 0)
+
+func _process_held_dodge(_delta: float) -> void:
+	pass
 
 func counter() -> void:
 	if state == State.Idle:
