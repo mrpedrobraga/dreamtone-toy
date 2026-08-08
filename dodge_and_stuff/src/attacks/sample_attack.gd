@@ -25,6 +25,8 @@ func small_attack():
 	spawn_bullet(Vector2(-1, -4), Vector2(0, speed))
 	spawn_bullet(Vector2(0, -4), Vector2(0, speed))
 	await pause(0.5)
+	spawn_bullet(Vector2(-5, 0), Vector2(speed, 0))
+	spawn_bullet(Vector2(5, 0), Vector2(-speed, 0))
 
 func big_attack():
 	var speed = 5
