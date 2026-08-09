@@ -39,9 +39,9 @@ func _physics_process(delta: float) -> void:
 			if state_timer <= 0:
 				_set_state(State.Idle, 0)
 
-func harm() -> void:
-	hp -= 1
-	hp_changed.emit(1)
+func harm(power) -> void:
+	hp -= power
+	hp_changed.emit(power)
 	_set_state(State.Hurt, hurt_duration)
 
 func die():

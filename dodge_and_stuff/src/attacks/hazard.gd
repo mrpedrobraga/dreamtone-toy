@@ -22,6 +22,7 @@ class_name Hazard
 
 var _is_currently_overlapping_character: bool = true
 var _was_overlapping_character_last_frame: bool = false
+var _hit_character_at_any_point = false
 
 const character_size = Vector2(1.0, 1.0)
 
@@ -30,12 +31,16 @@ const character_size = Vector2(1.0, 1.0)
 func _physics_process(_delta: float) -> void:
 	var is_overlapping = is_overlapping_character(battle.current_char)
 	if is_overlapping and not _was_overlapping_character_last_frame:
+		_hit_character_at_any_point = true
 		_handle_began_overlapping_character()
 	_was_overlapping_character_last_frame = _is_currently_overlapping_character
 	_is_currently_overlapping_character = is_overlapping
 
 func _handle_began_overlapping_character():
 	battle.harm_character()
+
+func _handle_dodged_successfull():
+	battle.successful_dodge(self)
 
 func is_overlapping_character(character: CharacterInstance):
 	var character_position = Vector2.ZERO

@@ -4,6 +4,6 @@ void fragment() {
 	vec2 uv = UV;
 	uv += TIME * 0.5;
 	vec4 col = texture(TEXTURE, uv);
-	col.a *= 0.10;
+	col.a *= 0.2;
 	COLOR = col;
 }

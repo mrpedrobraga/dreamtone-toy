@@ -6,7 +6,7 @@ class_name CharacterVisuals
 @export var character: CharacterInstance
 
 func _process(_delta: float) -> void:
-	if GoInputBuffer.is_action_buffered("ok"):
+	if GoInputBuffer.is_action_buffered("ok") and character.state != CharacterInstance.State.Idle:
 		modulate.r = 0.5
 	else:
 		modulate.r = 1.0
@@ -67,17 +67,19 @@ func _handle_state_change_held_dodge(new_state: CharacterInstance.State) -> void
 			_tween_counter()
 			$Jump.play()
 
-const dodge_horizontal_offset_px = 32;
-const dodge_vertical_offset_px = 24;
+const dodge_horizontal_offset_px = 256;
+const dodge_vertical_offset_px = 32;
+
+const trans = Tween.TRANS_QUART
 
 func _tween_dodge(amount: float, axis: String):
 	var t = create_tween()
-	t.tween_property(self, "position:" + axis, amount, character.dodge_duration / 2).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_QUAD)
-	t.tween_property(self, "position:" + axis, 0, character.dodge_duration / 2).set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_QUAD)
+	t.tween_property(self, "position:" + axis, amount, character.dodge_duration / 2).set_ease(Tween.EASE_OUT).set_trans(trans)
+	t.tween_property(self, "position:" + axis, 0, character.dodge_duration / 2).set_ease(Tween.EASE_IN).set_trans(trans)
 
 func _tween_move(where: Vector2):
 	var t = create_tween()
-	t.tween_property(self, "position", where, character.dodge_duration / 2).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_QUAD)
+	t.tween_property(self, "position", where, character.dodge_duration / 2).set_ease(Tween.EASE_OUT).set_trans(trans)
 
 func _tween_reset_move():
 	var t = create_tween()

@@ -143,6 +143,7 @@ stream = ExtResource("4_74c63")
 
 [node name="Mike" type="Node" parent="Battle/Party" unique_id=1530470528]
 script = ExtResource("3_c0sd3")
+en = 0
 counter_input_buffer_size = 30
 metadata/_custom_type_script = "uid://cfccggut3r4yq"
 
@@ -157,8 +158,8 @@ metadata/_custom_type_script = "uid://dkk75umd34gqe"
 script = ExtResource("5_jkatc")
 metadata/_custom_type_script = "uid://qd8hqap80omx"
 
-[node name="TextureRect" type="TextureRect" parent="." unique_id=1060085177]
-self_modulate = Color(1, 1, 1, 0.1254902)
+[node name="BG" type="TextureRect" parent="." unique_id=1060085177]
+self_modulate = Color(1, 1, 1, 0.88235295)
 material = SubResource("ShaderMaterial_vni0v")
 layout_mode = 1
 anchors_preset = 15
@@ -211,19 +212,16 @@ character = NodePath("../../Battle/Party/Mike")
 [node name="DodgeRight" type="AudioStreamPlayer2D" parent="You/CharacterView" unique_id=1198352489]
 position = Vector2(32, 0)
 stream = ExtResource("8_jvh00")
-volume_db = -10.0
 bus = &"SFX"
 
 [node name="DodgeLeft" type="AudioStreamPlayer2D" parent="You/CharacterView" unique_id=238152678]
 position = Vector2(-32, 0)
 stream = ExtResource("8_jvh00")
-volume_db = -10.0
 bus = &"SFX"
 
 [node name="DodgeDown" type="AudioStreamPlayer2D" parent="You/CharacterView" unique_id=1336267587]
 position = Vector2(0, 24)
 stream = ExtResource("8_jvh00")
-volume_db = -10.0
 bus = &"SFX"
 
 [node name="Jump" type="AudioStreamPlayer2D" parent="You/CharacterView" unique_id=1932420111]
@@ -252,7 +250,7 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("3_t3wmi")
 
-[node name="StatView" type="TextureRect" parent="UI" unique_id=1659256048]
+[node name="StatView" type="TextureRect" parent="UI" unique_id=1659256048 node_paths=PackedStringArray("character")]
 layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
@@ -266,6 +264,16 @@ grow_horizontal = 2
 grow_vertical = 0
 texture = ExtResource("6_xo11e")
 script = ExtResource("8_uw6ox")
+character = NodePath("../../Battle/Party/Mike")
+
+[node name="Label" type="Label" parent="UI/StatView" unique_id=229580442]
+layout_mode = 0
+offset_left = 61.0
+offset_top = 3.0
+offset_right = 101.0
+offset_bottom = 16.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "EN: 0"
 
 [connection signal="attack_enemy" from="Battle/Party/Mike" to="." method="_on_mike_attack_enemy"]
 [connection signal="hp_changed" from="Battle/Party/Mike" to="You/CharacterView" method="_on_mike_hp_changed"]

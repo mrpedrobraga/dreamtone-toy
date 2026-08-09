@@ -125,7 +125,7 @@ func _handle_inputs_timed_dodge():
 
 func _handle_inputs_timed_dodge_buffered():
 	if state == State.Idle:
-		if GoInputBuffer.is_action_buffered("ok", true):
+		if en > 0 and GoInputBuffer.is_action_buffered("ok", true):
 			GoInputBuffer.clear_input_buffer()
 			counter()
 			return
@@ -155,9 +155,11 @@ func _handle_inputs_held_dodge():
 
 func counter() -> void:
 	_set_state(State.Counter, counter_duration)
+	var attack_power = 1 # en
 	get_tree().create_timer(0.1).timeout.connect(func ():
-		attack_enemy.emit()
+		attack_enemy.emit(attack_power)
 	)
+	en -= attack_power
 
 func harm() -> void:
 	if invincibility_timer == 0:

@@ -35,7 +35,7 @@ func spawn_bullet(where: Vector2, velocity: Vector2):
 	var h = SimpleBulletHazard.new()
 	h.position = where
 	add_child(h)
-	h.schedule_death()
+	# h.schedule_death()
 	h.battle = battle
 	h.velocity = velocity
 
