@@ -67,7 +67,7 @@ func _handle_state_change_held_dodge(new_state: CharacterInstance.State) -> void
 			_tween_counter()
 			$Jump.play()
 
-const dodge_horizontal_offset_px = 256;
+const dodge_horizontal_offset_px = 32;
 const dodge_vertical_offset_px = 32;
 
 const trans = Tween.TRANS_QUART
