@@ -143,6 +143,7 @@ stream = ExtResource("4_74c63")
 
 [node name="Mike" type="Node" parent="Battle/Party" unique_id=1530470528]
 script = ExtResource("3_c0sd3")
+counter_input_buffer_size = 30
 metadata/_custom_type_script = "uid://cfccggut3r4yq"
 
 [node name="Attack" type="Node" parent="Battle" unique_id=337777821 node_paths=PackedStringArray("battle")]

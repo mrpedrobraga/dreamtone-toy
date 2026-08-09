@@ -51,7 +51,10 @@ enum ControlScheme {
 ##
 ## This adds leniency for if the player tries to dodge another attack
 ## before they've settled in an idle position.
-@export_range(0, 10) var input_buffer_size = 10
+@export_range(0, 120) var dodge_input_buffer_size = 10
+@export_range(0, 120) var counter_input_buffer_size = 10
+## If you can counter without waiting for the character to be in the idle position.
+@export var instant_countering: bool = false
 var state_timer = 0.0
 
 func _physics_process(delta: float) -> void:
@@ -94,11 +97,13 @@ func _process_held_dodge(delta: float) -> void:
 				_set_state(State.Idle, 0)
 
 func _input(event: InputEvent) -> void:
-	if input_buffer_size > 0:
-		GoInputBuffer.buffer_event(event, input_buffer_size)
+	if event.is_action("ok"):
+		GoInputBuffer.buffer_event(event, counter_input_buffer_size)
+	else:
+		GoInputBuffer.buffer_event(event, dodge_input_buffer_size)
 
 func _handle_inputs_timed_dodge():
-	if input_buffer_size > 0:
+	if dodge_input_buffer_size > 0:
 		_handle_inputs_timed_dodge_buffered()
 		return
 	if Input.is_action_just_pressed("ok"):
@@ -112,9 +117,11 @@ func _handle_inputs_timed_dodge():
 			_set_state(State.DodgeDown, dodge_duration)
 
 func _handle_inputs_timed_dodge_buffered():
-	if GoInputBuffer.is_action_buffered("ok", true):
-		counter()
 	if state == State.Idle:
+		if GoInputBuffer.is_action_buffered("ok", true):
+			GoInputBuffer.clear_input_buffer()
+			counter()
+			return
 		if GoInputBuffer.is_action_buffered("move_right", true):
 			_set_state(State.DodgeRight, dodge_duration)
 		if GoInputBuffer.is_action_buffered("move_left", true):
@@ -140,15 +147,15 @@ func _handle_inputs_held_dodge():
 		_set_state(new_state, dodge_duration)
 
 func counter() -> void:
-	if state == State.Idle:
-		_set_state(State.Counter, counter_duration)
-		get_tree().create_timer(0.1).timeout.connect(func ():
-			attack_enemy.emit()
-		)
+	_set_state(State.Counter, counter_duration)
+	get_tree().create_timer(0.1).timeout.connect(func ():
+		attack_enemy.emit()
+	)
 
 func harm() -> void:
 	hp -= 1
 	hp_changed.emit(1)
+	GoInputBuffer.clear_input_buffer()
 
 func _set_state(new_state: State, timer: float):
 	state_timer = timer

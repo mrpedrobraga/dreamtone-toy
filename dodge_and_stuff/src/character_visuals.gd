@@ -6,7 +6,10 @@ class_name CharacterVisuals
 @export var character: CharacterInstance
 
 func _process(_delta: float) -> void:
-	pass
+	if GoInputBuffer.is_action_buffered("ok"):
+		modulate.r = 0.5
+	else:
+		modulate.r = 1.0
 
 func _on_mike_state_changed(new_state: CharacterInstance.State) -> void:
 	match character.scheme:

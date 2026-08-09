@@ -4,12 +4,19 @@ extends Attack
 func _run():
 	await pause(2.0)
 	while true:
-		#await big_attack()
-		#await pause(1.6)
-		#await big_attack()
-		#await pause(1.6)
-		await small_attack()
+		#var callable: Callable = [small_attack, big_attack].pick_random()
+		var callable = unilateral
+		await callable.call()
 		await pause(3.0)
+
+func unilateral():
+	var speed = 5
+	spawn_bullet(Vector2(0, -4), Vector2(0, speed))
+	await pause(1.5)
+	spawn_bullet(Vector2(0, -4), Vector2(0, speed))
+	await pause(1.5)
+	spawn_bullet(Vector2(0, -4), Vector2(0, speed))
+	await pause(1.5)
 
 func small_attack():
 	var speed = 5
