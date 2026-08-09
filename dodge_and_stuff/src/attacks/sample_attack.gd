@@ -3,11 +3,13 @@ extends Attack
 
 func _run():
 	await pause(2.0)
+	var attacks: Array[Callable] = [big_attack, big_attack, small_attack]
+	var index = 0
 	while true:
-		#var callable: Callable = [small_attack, big_attack].pick_random()
-		var callable = unilateral
-		await callable.call()
+		var current_attack = attacks[index % attacks.size()]
+		await current_attack.call()
 		await pause(3.0)
+		index += 1;
 
 func unilateral():
 	var speed = 5

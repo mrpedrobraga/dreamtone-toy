@@ -10,6 +10,11 @@ func _process(_delta: float) -> void:
 		modulate.r = 0.5
 	else:
 		modulate.r = 1.0
+	
+	if character.invincibility_timer > 0:
+		modulate.a = 0.5
+	else:
+		modulate.a = 1.0
 
 func _on_mike_state_changed(new_state: CharacterInstance.State) -> void:
 	match character.scheme:

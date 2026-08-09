@@ -27,7 +27,7 @@ func _process(_delta: float) -> void:
 
 func harm_character():
 	current_char.harm()
-	$Battle/Enemies/Brian.hp += 4
+	#$Battle/Enemies/Brian.hp += 4
 	update_score()
 
 func _on_mike_attack_enemy() -> void:

@@ -45,6 +45,8 @@ enum ControlScheme {
 ## Faster dodges means more precise control.
 ## Only meaningul in the 'Timed Dodge' scheme.
 @export var dodge_duration = 0.5
+## For how long you're invincible after taking a hit!
+@export var invincibility = 0.5
 ## How long countering takes.
 @export var counter_duration = 0.25
 ## For how many frames will the game hold onto unused input.
@@ -56,8 +58,12 @@ enum ControlScheme {
 ## If you can counter without waiting for the character to be in the idle position.
 @export var instant_countering: bool = false
 var state_timer = 0.0
+var invincibility_timer = 0.0
 
 func _physics_process(delta: float) -> void:
+	if invincibility_timer > 0:
+		invincibility_timer = max(0, invincibility_timer - delta)
+	
 	match scheme:
 		ControlScheme.TimedDodge:
 			_handle_inputs_timed_dodge()
@@ -97,10 +103,11 @@ func _process_held_dodge(delta: float) -> void:
 				_set_state(State.Idle, 0)
 
 func _input(event: InputEvent) -> void:
-	if event.is_action("ok"):
-		GoInputBuffer.buffer_event(event, counter_input_buffer_size)
-	else:
-		GoInputBuffer.buffer_event(event, dodge_input_buffer_size)
+	if event.is_pressed():
+		if event.is_action("ok"):
+			GoInputBuffer.buffer_event(event, counter_input_buffer_size)
+		else:
+			GoInputBuffer.buffer_event(event, dodge_input_buffer_size)
 
 func _handle_inputs_timed_dodge():
 	if dodge_input_buffer_size > 0:
@@ -153,9 +160,11 @@ func counter() -> void:
 	)
 
 func harm() -> void:
-	hp -= 1
-	hp_changed.emit(1)
-	GoInputBuffer.clear_input_buffer()
+	if invincibility_timer == 0:
+		hp -= 1
+		hp_changed.emit(1)
+		GoInputBuffer.clear_input_buffer()
+		invincibility_timer = invincibility
 
 func _set_state(new_state: State, timer: float):
 	state_timer = timer
